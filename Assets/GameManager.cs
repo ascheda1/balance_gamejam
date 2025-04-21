@@ -12,10 +12,12 @@ public class GameManager : MonoBehaviour
     public AudioClip Flow;
     public AudioClip Impulse;
     public AudioClip Metropolis;
+    public AudioClip Neon;
     public int activeAudio = 0;
 
     public PlayerReached playerReachedLevel2;
     public PlayerReached playerReachedLevel3;
+    public PlayerReached blockFinnish;
 
     public PlayerReached waterLevel2;
 
@@ -43,6 +45,13 @@ public class GameManager : MonoBehaviour
             GlobalAudio.clip = Metropolis;
             GlobalAudio.Play();
             activeAudio = 2;
+        }
+
+        if (blockFinnish.playerReached && activeAudio == 2)
+        {
+            GlobalAudio.clip = Neon;
+            GlobalAudio.Play();
+            activeAudio = 3;
         }
 
         if (waterLevel2.playerReached)
