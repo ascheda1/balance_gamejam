@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -24,6 +26,11 @@ public class GameManager : MonoBehaviour
     public Transform player1Level2;
     public Transform player2Level2;
 
+    public CalculateRatio CR;
+
+    public Slider slider;
+    public Image bgrndImage;
+    public float percentLeft = 1000.0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -57,6 +64,26 @@ public class GameManager : MonoBehaviour
         if (waterLevel2.playerReached)
         {
             StartCoroutine(RestartLevel2Coroutine());
+        }
+
+        if (Mathf.Abs(50 - CR.percentPlayer1) > 3)
+        {
+            percentLeft -= Time.deltaTime * Mathf.Abs(50 - CR.percentPlayer1);
+
+        }
+
+        slider.value = percentLeft;
+        if (percentLeft < 0)
+        {
+            // GAME OVER
+        }
+        else if (percentLeft < 100)
+        {
+            bgrndImage.color = Color.red;
+        }
+        else if (percentLeft < 500)
+        {
+            bgrndImage.color = Color.yellow;
         }
     }
 
