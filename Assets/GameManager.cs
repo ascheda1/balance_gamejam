@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -30,7 +31,10 @@ public class GameManager : MonoBehaviour
 
     public Slider slider;
     public Image bgrndImage;
-    public float percentLeft = 1000.0f;
+    public float percentLeft = 100.0f;
+    public GameObject GameOverScreen;
+    public GameObject VictoryScreen;
+    public TextMeshProUGUI percentText;
     // Start is called before the first frame update
     void Start()
     {
@@ -59,6 +63,9 @@ public class GameManager : MonoBehaviour
             GlobalAudio.clip = Neon;
             GlobalAudio.Play();
             activeAudio = 3;
+            Time.timeScale = 0;
+            percentText.text = "With " + percentLeft + "% left";
+            VictoryScreen.SetActive(true);
         }
 
         if (waterLevel2.playerReached)
@@ -68,23 +75,31 @@ public class GameManager : MonoBehaviour
 
         if (Mathf.Abs(50 - CR.percentPlayer1) > 3)
         {
-            percentLeft -= Time.deltaTime * Mathf.Abs(50 - CR.percentPlayer1);
+            percentLeft -= Time.deltaTime / 5 * Mathf.Abs(50 - CR.percentPlayer1);
 
         }
 
         slider.value = percentLeft;
-        if (percentLeft < 0)
+        if (percentLeft <= 0)
         {
             // GAME OVER
+            Time.timeScale = 0;
+            GameOverScreen.SetActive(true);
         }
-        else if (percentLeft < 100)
+        else if (percentLeft < 10)
         {
             bgrndImage.color = Color.red;
         }
-        else if (percentLeft < 500)
+        else if (percentLeft < 50)
         {
             bgrndImage.color = Color.yellow;
         }
+    }
+
+    public void RestartGame()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     IEnumerator RestartLevel2Coroutine()
