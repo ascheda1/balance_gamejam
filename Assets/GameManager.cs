@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour
     public Transform player1Level2;
     public Transform player2Level2;
 
+    public PlayerReached waterLevel3;
+
     public CalculateRatio CR;
 
     public Slider slider;
@@ -35,6 +37,8 @@ public class GameManager : MonoBehaviour
     public GameObject GameOverScreen;
     public GameObject VictoryScreen;
     public TextMeshProUGUI percentText;
+
+    bool restart = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -73,14 +77,19 @@ public class GameManager : MonoBehaviour
             StartCoroutine(RestartLevel2Coroutine());
         }
 
+        if (waterLevel3.playerReached)
+        {
+            StartCoroutine(RestartLevel3Coroutine());
+        }
+
         if (Mathf.Abs(50 - CR.percentPlayer1) > 3)
         {
-            percentLeft -= Time.deltaTime / 5 * Mathf.Abs(50 - CR.percentPlayer1);
+            percentLeft -= Time.deltaTime / 5 * Mathf.Pow(Mathf.Abs(50 - CR.percentPlayer1), 1.2f);
 
         }
 
         slider.value = percentLeft;
-        if (percentLeft <= 0)
+        if (percentLeft <= 0 && Time.timeScale != 0)
         {
             // GAME OVER
             Time.timeScale = 0;
@@ -94,12 +103,17 @@ public class GameManager : MonoBehaviour
         {
             bgrndImage.color = Color.yellow;
         }
+
+        if (restart) // Old Input System
+        {
+            Time.timeScale = 1f; // Reset in case game was paused
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 
     public void RestartGame()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        restart = true;
     }
 
     IEnumerator RestartLevel2Coroutine()
@@ -126,5 +140,30 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
 
         waterLevel2.playerReached = false;
+    }
+    IEnumerator RestartLevel3Coroutine()
+    {
+        Time.timeScale = 0;
+
+        yield return null; // wait one frame
+
+        Animator anim1 = Player1.GetComponent<Animator>();
+        Animator anim2 = Player2.GetComponent<Animator>();
+
+        anim1.enabled = false;
+        anim2.enabled = false;
+
+        anim1.Play("Idle", 0, 0); // Replace "Idle" with your default state
+        anim2.Play("Idle", 0, 0);
+
+        Player1.transform.position = player1Level2.position;
+        Player2.transform.position = player2Level2.position;
+
+        anim1.enabled = true;
+        anim2.enabled = true;
+
+        Time.timeScale = 1;
+
+        waterLevel3.playerReached = false;
     }
 }
