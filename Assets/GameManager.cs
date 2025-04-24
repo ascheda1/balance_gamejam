@@ -27,6 +27,9 @@ public class GameManager : MonoBehaviour
     public Transform player1Level2;
     public Transform player2Level2;
 
+    public Transform player1Level3;
+    public Transform player2Level3;
+
     public PlayerReached waterLevel3;
 
     public CalculateRatio CR;
@@ -156,8 +159,8 @@ public class GameManager : MonoBehaviour
         anim1.Play("Idle", 0, 0); // Replace "Idle" with your default state
         anim2.Play("Idle", 0, 0);
 
-        Player1.transform.position = player1Level2.position;
-        Player2.transform.position = player2Level2.position;
+        Player1.transform.position = player1Level3.position;
+        Player2.transform.position = player2Level3.position;
 
         anim1.enabled = true;
         anim2.enabled = true;
