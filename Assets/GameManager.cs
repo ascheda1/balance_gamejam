@@ -131,8 +131,8 @@ public class GameManager : MonoBehaviour
         anim1.enabled = false;
         anim2.enabled = false;
 
-        anim1.Play("Idle", 0, 0); // Replace "Idle" with your default state
-        anim2.Play("Idle", 0, 0);
+        anim1.Play("Idle Walk Run Blend", 0, 0);
+        anim2.Play("Idle Walk Run Blend", 0, 0);
 
         Player1.transform.position = player1Level2.position;
         Player2.transform.position = player2Level2.position;
@@ -156,8 +156,8 @@ public class GameManager : MonoBehaviour
         anim1.enabled = false;
         anim2.enabled = false;
 
-        anim1.Play("Idle", 0, 0); // Replace "Idle" with your default state
-        anim2.Play("Idle", 0, 0);
+        anim1.Play("Idle Walk Run Blend", 0, 0);
+        anim2.Play("Idle Walk Run Blend", 0, 0);
 
         Player1.transform.position = player1Level3.position;
         Player2.transform.position = player2Level3.position;
